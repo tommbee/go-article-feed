@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tommbee/feed-app/controller"
-	"github.com/tommbee/feed-app/router"
+	"./controller"
+	"./router"
 )
 
 var r *router.Router

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/tommbee/feed-app/controller"
+	"../controller"
 )
 
 // Router object to handle http routing to controllers
