@@ -1,5 +1,4 @@
 FROM golang:latest AS build-env
-ENV PORT=8080
 RUN mkdir /app 
 ADD . /app/ 
 WORKDIR /app
