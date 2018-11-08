@@ -1,19 +1,26 @@
 package controller
 
 import (
+	"encoding/json"
+	"errors"
 	"net/http"
+
+	"../model"
 )
 
-type article struct{}
+// Article controller to handle article routes
+type Article struct{}
 
-func (a article) registerRoutes() {
-	http.HandleFunc("/", a.handleRequest)
+func getArticle(id int64) (model.Article, error) {
+	// Query repo
+	return nil, errors.New("")
 }
 
-func (a article) handleRequest(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Type", "text/html")
-	// err := a.articleTemplate.Execute(w, nil)
-	// if err != nil {
-	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-	// }
+func (a Article) handleRequest(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	article, err := getArticle(1)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	json.NewEncoder(w).Encode(article)
 }

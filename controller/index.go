@@ -6,12 +6,15 @@ import (
 	"net/http"
 
 	"../model"
+	"../repository"
 )
 
 // Index is the article listing controller
-type Index struct{}
+type Index struct {
+	repository *repository.ArticleRepository
+}
 
-func getLatestArticles() ([]model.Article, error) {
+func getLatestArticles() ([]*model.Article, error) {
 	// Query repo
 	return nil, errors.New("")
 }

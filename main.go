@@ -23,6 +23,6 @@ func main() {
 		panic("PORT env var not set")
 	}
 	r := newRouter()
-	r.Add("/", controller.Index{})
+	r.Add("/", controller.Index{repository: nil}) // Add mongo repo instance
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
