@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"../model"
+	"github.com/tommbee/go-article-feed/model"
 )
 
 // Article controller to handle article routes
@@ -13,7 +13,7 @@ type Article struct{}
 
 func getArticle(id int64) (model.Article, error) {
 	// Query repo
-	return nil, errors.New("")
+	return model.Article{}, errors.New("")
 }
 
 func (a Article) handleRequest(w http.ResponseWriter, r *http.Request) {

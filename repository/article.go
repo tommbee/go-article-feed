@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"../model"
+	"github.com/tommbee/go-article-feed/model"
 )
 
 // ArticleRepository handles the interface to persistant storage

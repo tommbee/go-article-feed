@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"./controller"
-	"./router"
+	"github.com/tommbee/go-article-feed/controller"
+	"github.com/tommbee/go-article-feed/router"
 )
 
 var r *router.Router
@@ -23,6 +23,6 @@ func main() {
 		panic("PORT env var not set")
 	}
 	r := newRouter()
-	r.Add("/", controller.Index{repository: nil}) // Add mongo repo instance
+	r.Add("/", controller.Index{Repository: nil}) // Add mongo repo instance
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }

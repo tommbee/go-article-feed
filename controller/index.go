@@ -5,13 +5,13 @@ import (
 	"errors"
 	"net/http"
 
-	"../model"
-	"../repository"
+	"github.com/tommbee/go-article-feed/model"
+	"github.com/tommbee/go-article-feed/repository"
 )
 
 // Index is the article listing controller
 type Index struct {
-	repository *repository.ArticleRepository
+	Repository *repository.ArticleRepository
 }
 
 func getLatestArticles() ([]*model.Article, error) {

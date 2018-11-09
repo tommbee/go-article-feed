@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"../controller"
+	"github.com/tommbee/go-article-feed/controller"
 )
 
 // Router object to handle http routing to controllers
