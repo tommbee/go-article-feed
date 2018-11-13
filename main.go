@@ -6,10 +6,21 @@ import (
 	"os"
 
 	"github.com/tommbee/go-article-feed/controller"
+	"github.com/tommbee/go-article-feed/repository"
 	"github.com/tommbee/go-article-feed/router"
 )
 
 var r *router.Router
+var repo *repository.ArticleRepository
+
+func newRepo() *repository.MongoArticleRepository {
+	r := &repository.MongoArticleRepository{
+		Database:   os.Getenv("DB"),
+		Collection: os.Getenv("ARTICLE_COLLECTION"),
+	}
+	r.Connect()
+	return r
+}
 
 func newRouter() *router.Router {
 	return &router.Router{
@@ -23,6 +34,7 @@ func main() {
 		panic("PORT env var not set")
 	}
 	r := newRouter()
-	r.Add("/", controller.Index{Repository: nil}) // Add mongo repo instance
+	repo := newRepo()
+	r.Add("/", controller.Index{Repository: repo}) // Add mongo repo instance
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }

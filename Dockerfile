@@ -1,7 +1,8 @@
 FROM golang:latest AS build-env
-RUN mkdir /app 
-ADD . /app/ 
-WORKDIR /app
+ADD . /go/src/app/ 
+WORKDIR /go/src/app
+RUN go get -d -v ./...
+RUN go install -v ./...
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o main .
 
 # final stage
