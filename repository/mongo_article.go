@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/tommbee/go-article-feed/model"
@@ -14,28 +15,33 @@ type MongoArticleRepository struct {
 	Collection string
 }
 
-//var db *mgo.Database
-var db *mgo.Session
+// Database object
+var Database *mgo.Database
+
+//var db *mgo.Session
 
 // Connect to the db
 func (r *MongoArticleRepository) Connect() {
-	db, err := mgo.Dial(r.Database)
+	session, err := mgo.Dial(r.Database)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
-
-	db.SetMode(mgo.Monotonic, true)
+	Database := session.DB(r.Database)
+	count, _ := Database.C(r.Collection).Count()
+	fmt.Printf("Currently %d posts in the database", count)
+	// defer db.Close()
+	// db.SetMode(mgo.Monotonic, true)
 }
 
 // Fetch all records from the article repository
 func (r *MongoArticleRepository) Fetch(num int64) ([]*model.Article, error) {
-	sessionCopy := db.Copy()
-	defer sessionCopy.Close()
-	c := sessionCopy.DB(r.Database).C(r.Collection)
+	// sessionCopy := db.Copy()
+	// defer sessionCopy.Close()
+	// c := sessionCopy.DB(r.Database).C(r.Collection)
 	var articles []*model.Article
 	log.Print("Getting articles")
-	err := c.Find(nil).All(&articles)
+	//err := c.Find(nil).All(&articles)
+	err := Database.C(r.Collection).Find(nil).All(&articles)
 	return articles, err
 }
 
