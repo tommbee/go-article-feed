@@ -14,25 +14,28 @@ type MongoArticleRepository struct {
 	Collection string
 }
 
-var db *mgo.Database
+//var db *mgo.Database
+var db *mgo.Session
 
 // Connect to the db
 func (r *MongoArticleRepository) Connect() {
-	session, err := mgo.Dial(r.Database)
+	db, err := mgo.Dial(r.Database)
 	if err != nil {
 		log.Fatal(err)
 	}
-	db = session.DB(r.Database)
-	defer session.Close()
+	defer db.Close()
 
-	session.SetMode(mgo.Monotonic, true)
+	db.SetMode(mgo.Monotonic, true)
 }
 
 // Fetch all records from the article repository
 func (r *MongoArticleRepository) Fetch(num int64) ([]*model.Article, error) {
+	sessionCopy := db.Copy()
+	defer sessionCopy.Close()
+	c := sessionCopy.DB(r.Database).C(r.Collection)
 	var articles []*model.Article
 	log.Print("Getting articles")
-	err := db.C(r.Collection).Find(nil).All(&articles)
+	err := c.Find(nil).All(&articles)
 	return articles, err
 }
 
