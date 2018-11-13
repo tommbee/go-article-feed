@@ -7,6 +7,7 @@ import (
 	"github.com/tommbee/go-article-feed/model"
 
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // MongoArticleRepository interfaces with a mongo db instance
@@ -41,7 +42,7 @@ func (r *MongoArticleRepository) Fetch(num int64) ([]*model.Article, error) {
 	var articles []*model.Article
 	log.Print("Getting articles")
 	//err := c.Find(nil).All(&articles)
-	err := Database.C(r.Collection).Find(nil).All(&articles)
+	err := Database.C(r.Collection).Find(bson.M{}).All(&articles)
 	return articles, err
 }
 
