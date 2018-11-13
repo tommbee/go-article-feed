@@ -31,6 +31,7 @@ func (r *MongoArticleRepository) Connect() {
 // Fetch all records from the article repository
 func (r *MongoArticleRepository) Fetch(num int64) ([]*model.Article, error) {
 	var articles []*model.Article
+	log.Print("Getting articles")
 	err := db.C(r.Collection).Find(nil).All(&articles)
 	return articles, err
 }
