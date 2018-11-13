@@ -7,8 +7,6 @@ import (
 	"github.com/tommbee/go-article-feed/repository"
 )
 
-// var r *repository.MongoArticleRepository
-
 // Index is the article listing controller
 type Index struct {
 	Repository repository.ArticleRepository

@@ -49,18 +49,3 @@ func (r *MongoArticleRepository) GetByTitle(title string) (*model.Article, error
 func (r *MongoArticleRepository) GetByUrl(URL string) (*model.Article, error) {
 	return nil, nil
 }
-
-// Update entites
-func (r *MongoArticleRepository) Update(article *model.Article) (*model.Article, error) {
-	return nil, nil
-}
-
-// Store entites
-func (r *MongoArticleRepository) Store(a *model.Article) (int64, error) {
-	return 0, nil
-}
-
-// Delete entities
-func (r *MongoArticleRepository) Delete(id int64) (bool, error) {
-	return false, nil
-}

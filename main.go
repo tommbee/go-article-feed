@@ -35,6 +35,6 @@ func main() {
 	}
 	r := newRouter()
 	repo := newRepo()
-	r.Add("/", controller.Index{Repository: repo}) // Add mongo repo instance
+	r.Add("/articles", controller.Index{Repository: repo}) // Add mongo repo instance
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
