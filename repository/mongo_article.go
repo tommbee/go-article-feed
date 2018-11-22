@@ -29,7 +29,7 @@ func (r *MongoArticleRepository) Connect() {
 	}
 	Database := session.DB(r.Database)
 	count, _ := Database.C(r.Collection).Count()
-	fmt.Printf("Currently %d posts in the database", count)
+	fmt.Printf("** Currently %d posts in the database", count)
 	// defer db.Close()
 	// db.SetMode(mgo.Monotonic, true)
 }

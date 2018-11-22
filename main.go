@@ -14,12 +14,12 @@ var r *router.Router
 var repo *repository.ArticleRepository
 
 func newRepo() *repository.MongoArticleRepository {
-	r := &repository.MongoArticleRepository{
+	ro := &repository.MongoArticleRepository{
 		Database:   os.Getenv("DB"),
 		Collection: os.Getenv("ARTICLE_COLLECTION"),
 	}
-	r.Connect()
-	return r
+	ro.Connect()
+	return ro
 }
 
 func newRouter() *router.Router {
