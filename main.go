@@ -15,10 +15,10 @@ var repo *repository.ArticleRepository
 
 func newRepo() *repository.MongoArticleRepository {
 	ro := &repository.MongoArticleRepository{
-		Database:   os.Getenv("DB"),
-		Collection: os.Getenv("ARTICLE_COLLECTION"),
+		Server:       os.Getenv("SERVER"),
+		DatabaseName: os.Getenv("DB"),
+		Collection:   os.Getenv("ARTICLE_COLLECTION"),
 	}
-	ro.Connect()
 	return ro
 }
 

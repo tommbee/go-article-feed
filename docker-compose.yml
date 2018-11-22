@@ -7,7 +7,8 @@ services:
       - 8080:8080
     environment:
       - PORT=8080
-      - DB=mongodb
+      - SERVER=mongodb
+      - DB=article
       - ARTICLE_COLLECTION=articles
 
   mongodb:
