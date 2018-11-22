@@ -9,7 +9,7 @@ import (
 
 // Index is the article listing controller
 type Index struct {
-	Repository *repository.MongoArticleRepository
+	Repository repository.ArticleRepository
 }
 
 // HandleRequest hnadle the response for a given request
