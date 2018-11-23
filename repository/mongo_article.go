@@ -27,12 +27,13 @@ func (r *MongoArticleRepository) Connect() {
 }
 
 // Fetch all records from the article repository
-func (r *MongoArticleRepository) Fetch(num int64) ([]*model.Article, error) {
+func (r *MongoArticleRepository) Fetch(num int) ([]*model.Article, error) {
 	r.Connect()
 	defer r.session.Close()
 	log.Print("Getting articles")
 	var articles []*model.Article
-	err := r.session.DB(r.DatabaseName).C(r.Collection).Find(bson.M{}).All(&articles)
+	q := r.session.DB(r.DatabaseName).C(r.Collection).Find(bson.M{}).Limit(num)
+	err := q.All(&articles)
 	return articles, err
 }
 
