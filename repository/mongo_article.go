@@ -5,7 +5,7 @@ import (
 
 	"github.com/tommbee/go-article-feed/model"
 
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
