@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/tommbee/go-article-feed/controller"
 	"github.com/tommbee/go-article-feed/repository"
@@ -14,10 +15,14 @@ var r *router.Router
 var repo *repository.ArticleRepository
 
 func newRepo() *repository.MongoArticleRepository {
+	serverUrls := os.Getenv("SERVER")
+	serverUrlsArray := strings.Split(serverUrls, ",")
 	ro := &repository.MongoArticleRepository{
-		Server:       os.Getenv("SERVER"),
+		Server:       serverUrlsArray,
 		DatabaseName: os.Getenv("DB"),
 		Collection:   os.Getenv("ARTICLE_COLLECTION"),
+		Username:     os.Getenv("DB_USER"),
+		Password:     os.Getenv("DB_PASSWORD"),
 	}
 	return ro
 }

@@ -10,15 +10,21 @@ services:
       - SERVER=mongodb
       - DB=article
       - ARTICLE_COLLECTION=articles
+      - DB_USER=article_user
+      - DB_PASSWORD=article123
 
   mongodb:
     image: mongo:latest
     container_name: "mongodb"
     environment:
       - MONGO_DATA_DIR=/data/db
-      - MONGO_LOG_DIR=/dev/null
+      - NODE_ENV=production
+      - MONGO_INITDB_ROOT_USERNAME=root_username
+      - MONGO_INITDB_ROOT_PASSWORD=very_secure_root_pass
+      #- MONGO_LOG_DIR=/dev/null
     volumes:
       - ./data/db:/data/db
+      - "./mongo-entrypoint/:/docker-entrypoint-initdb.d/"
     ports:
         - 27017:27017
-    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    #command: mongod --smallfiles --logpath=/dev/null # --quiet
