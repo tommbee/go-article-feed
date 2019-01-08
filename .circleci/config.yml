@@ -1,0 +1,39 @@
+workflows:
+  version: 2
+  untagged-build:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+  tagged-build:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
+      - test:
+          requires:
+            - build
+      - hold:
+          type: approval
+          requires:
+           - test
+      - deploy:
+          requires:
+            - hold
+    build:
+      steps:
+        - checkout
+        - run: docker login -u $DOCKER_USER -p $DOCKER_PASS $DOCKER_REGISTRY
+        - run: docker build -t $DOCKER_IMAGE_URL:$CIRCLE_BUILD_NUM .
+        - run: docker push $DOCKER_IMAGE_URL:$CIRCLE_BUILD_NUM
+    test:
+      docker:
+        - image: circleci/golang:1.8
+      steps:
+        - checkout
+        - run: go get
+        - run: go test
