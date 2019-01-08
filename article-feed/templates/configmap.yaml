@@ -7,5 +7,7 @@ data:
   articleCollection: "{{ .Values.articleCollection }}"
   dbUser: "{{ .Values.dbUser }}"
   dbPassword: "{{ .Values.dbPassword }}"
+  authDb: "{{ .Values.authDb }}"
+  dbSsl: "{{ .Values.dbSsl }}"
 metadata:
   name: {{ .Release.Name }}-configmap

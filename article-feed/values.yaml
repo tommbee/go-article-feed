@@ -14,7 +14,7 @@ fullnameOverride: ""
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 80
 
 ingress:
   enabled: false
@@ -43,9 +43,11 @@ tolerations: []
 
 affinity: {}
 
-port: "8080"
+port: "80"
 server: "mongodb"
 db: "article"
 articleCollection: "articles"
 dbUser: "article_user"
 dbPassword: "article123"
+authDb: "article"
+dbSsl: "false"

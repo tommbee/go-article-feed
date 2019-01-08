@@ -54,6 +54,16 @@ spec:
               configMapKeyRef:
                 key:  dbPassword
                 name: {{ .Release.Name }}-configmap
+          - name: AUTH_DB
+            valueFrom:
+              configMapKeyRef:
+                key:  authDb
+                name: {{ .Release.Name }}-configmap
+          - name: DB_SSL
+            valueFrom:
+              configMapKeyRef:
+                key:  dbSsl
+                name: {{ .Release.Name }}-configmap
           ports:
             - name: http
               containerPort: 80
@@ -61,13 +71,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /articles
-              port: http
+              port: 8080
             initialDelaySeconds: 3
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /articles
-              port: http
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 15
           resources:

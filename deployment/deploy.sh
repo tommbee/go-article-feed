@@ -8,4 +8,6 @@ helm upgrade -i article-feed ./article-feed \n
 --set db=${DB} \n
 --set articleCollection=${ARTICLE_COLLECTION} \n
 --set dbUser=${DB_USER} \n
---set dbPassword=${DB_PASSWORD}
+--set dbPassword=${DB_PASSWORD} \n
+--set authDb=${AUTH_DB} \n
+--set dbSsl=${DB_SSL}
