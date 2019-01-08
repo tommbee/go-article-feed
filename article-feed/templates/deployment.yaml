@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "article-feed.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "article-feed.name" . }}
+    helm.sh/chart: {{ include "article-feed.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "article-feed.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "article-feed.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                key:  port
+                name: {{ .Release.Name }}-configmap
+          - name: SERVER
+            valueFrom:
+              configMapKeyRef:
+                key:  server
+                name: {{ .Release.Name }}-configmap
+          - name: DB
+            valueFrom:
+              configMapKeyRef:
+                key:  db
+                name: {{ .Release.Name }}-configmap
+          - name: ARTICLE_COLLECTION
+            valueFrom:
+              configMapKeyRef:
+                key:  articleCollection
+                name: {{ .Release.Name }}-configmap
+          - name: DB_USER
+            valueFrom:
+              configMapKeyRef:
+                key:  dbUser
+                name: {{ .Release.Name }}-configmap
+          - name: DB_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                key:  dbPassword
+                name: {{ .Release.Name }}-configmap
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /articles
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /articles
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  port: "{{ .Values.port }}"
+  server: "{{ .Values.server }}"
+  db: "{{ .Values.db }}"
+  articleCollection: "{{ .Values.articleCollection }}"
+  dbUser: "{{ .Values.dbUser }}"
+  dbPassword: "{{ .Values.dbPassword }}"
+metadata:
+  name: {{ .Release.Name }}-configmap
