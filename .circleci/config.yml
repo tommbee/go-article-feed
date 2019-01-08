@@ -15,11 +15,11 @@ jobs:
       - checkout
       - run: go get
       - run: go test
-    deploy:
+  deploy:
     machine: true
     steps:
-    - checkout
-    - run: ./deployment/deploy.sh
+      - checkout
+      - run: ./deployment/deploy.sh
 workflows:
   version: 2
   untagged-build:
