@@ -11,8 +11,10 @@ import (
 
 // MongoArticleRepository interfaces with a mongo db instance
 type MongoArticleRepository struct {
-	Server       []string
+	Server       string
 	DatabaseName string
+	AuthDatabase string
+	DBSSL        string
 	Collection   string
 	Username     string
 	Password     string
@@ -23,10 +25,12 @@ type MongoArticleRepository struct {
 type key string
 
 const (
-	hostKey     = key("hostKey")
-	usernameKey = key("usernameKey")
-	passwordKey = key("passwordKey")
-	databaseKey = key("databaseKey")
+	hostKey         = key("hostKey")
+	usernameKey     = key("usernameKey")
+	passwordKey     = key("passwordKey")
+	databaseKey     = key("databaseKey")
+	authDatabaseKey = key("authDatabaseKey")
+	dBSSL           = key("dBSSL")
 )
 
 // Connect to the db instance
@@ -39,6 +43,8 @@ func (r *MongoArticleRepository) Connect() {
 	ctx = context.WithValue(ctx, usernameKey, r.Username)
 	ctx = context.WithValue(ctx, passwordKey, r.Password)
 	ctx = context.WithValue(ctx, databaseKey, r.DatabaseName)
+	ctx = context.WithValue(ctx, authDatabaseKey, r.AuthDatabase)
+	ctx = context.WithValue(ctx, dBSSL, r.DBSSL)
 	db, err := configDB(ctx)
 	if err != nil {
 		log.Fatalf("todo: database configuration failed: %v", err)
@@ -47,12 +53,15 @@ func (r *MongoArticleRepository) Connect() {
 }
 
 func configDB(ctx context.Context) (*mongo.Database, error) {
-	uri := fmt.Sprintf(`mongodb://%s:%s@%s/%s`,
+	uri := fmt.Sprintf(`mongodb://%s:%s@%s/%s?authSource=%s&ssl=%s`,
 		ctx.Value(usernameKey),
 		ctx.Value(passwordKey),
 		ctx.Value(hostKey),
 		ctx.Value(databaseKey),
+		ctx.Value(authDatabaseKey),
+		ctx.Value(dBSSL),
 	)
+	log.Print(uri)
 	client, err := mongo.NewClient(uri)
 	if err != nil {
 		return nil, fmt.Errorf("todo: couldn't connect to mongo: %v", err)

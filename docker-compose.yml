@@ -12,6 +12,8 @@ services:
       - ARTICLE_COLLECTION=articles
       - DB_USER=article_user
       - DB_PASSWORD=article123
+      - AUTH_DB=article
+      - DB_SSL=false
 
   mongodb:
     image: mongo:latest
