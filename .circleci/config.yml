@@ -18,7 +18,12 @@ workflows:
   version: 2
   untagged-build:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              ignore: master
       - test:
           requires:
             - build
