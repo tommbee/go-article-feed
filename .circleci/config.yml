@@ -19,7 +19,8 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: ./deployment/deploy.sh
+      - run: chmod +x ./deployment/deploy.sh
+      - run: bash ./deployment/deploy.sh
 workflows:
   version: 2
   untagged-build:
