@@ -10,7 +10,7 @@ jobs:
   test:
     docker:
       - image: circleci/golang:1.8
-    working_directory: /go/src/$REPO_URL
+    working_directory: /go/src/github.com/tommbee/go-article-feed
     steps:
       - checkout
       - run: go get
