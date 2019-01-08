@@ -10,6 +10,7 @@ jobs:
   test:
     docker:
       - image: circleci/golang:1.8
+    working_directory: /go/src/$REPO_URL
     steps:
       - checkout
       - run: go get
