@@ -4,7 +4,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS $DOCKER_REGISTRY
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker build -t $DOCKER_IMAGE_URL:$CIRCLE_BUILD_NUM .
       - run: docker push $DOCKER_IMAGE_URL:$CIRCLE_BUILD_NUM
   test:
