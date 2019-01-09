@@ -70,13 +70,13 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /articles
+              path: /heartbeat
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 15
           readinessProbe:
             httpGet:
-              path: /articles
+              path: /heartbeat
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 15
