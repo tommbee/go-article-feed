@@ -16,7 +16,8 @@ jobs:
       - run: go get
       - run: go test
   deploy:
-    machine: true
+    docker:
+      - image: google/cloud-sdk
     steps:
       - checkout
       - run: chmod +x ./deployment/deploy.sh
