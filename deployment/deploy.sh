@@ -5,14 +5,13 @@ echo 'Deploying...'
 ## install helm
 echo "Check Helm is installed"
 if [[ $((helm) 2>&1 | grep "command not found" ) ]]; then
-    echo "You must install Helm. https://github.com/helm/helm/blob/master/docs/install.md"
-    exit 1
+    echo "Installing Helm"
+    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+    chmod 700 get_helm.sh
+    ./get_helm.sh
 fi
 
-echo "Installing Helm"
-
 ## authenticate with GKE
-
 apt-get install -qq -y gettext
 echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
