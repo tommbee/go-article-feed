@@ -44,10 +44,10 @@ tolerations: []
 affinity: {}
 
 port: "80"
-server: "mongodb"
-db: "article"
-articleCollection: "articles"
-dbUser: "article_user"
-dbPassword: "article123"
-authDb: "article"
-dbSsl: "false"
+server: "placeholder"
+db: "placeholder"
+articleCollection: "placeholder"
+dbUser: "placeholder"
+dbPassword: "placeholder"
+authDb: "placeholder"
+dbSsl: "placeholder"

@@ -31,34 +31,34 @@ spec:
                 name: {{ .Release.Name }}-configmap
           - name: SERVER
             valueFrom:
-              configMapKeyRef:
-                key:  server
-                name: {{ .Release.Name }}-configmap
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: server
           - name: DB
             valueFrom:
-              configMapKeyRef:
-                key:  db
-                name: {{ .Release.Name }}-configmap
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: db
           - name: ARTICLE_COLLECTION
             valueFrom:
-              configMapKeyRef:
-                key:  articleCollection
-                name: {{ .Release.Name }}-configmap
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: collection
           - name: DB_USER
             valueFrom:
-              configMapKeyRef:
-                key:  dbUser
-                name: {{ .Release.Name }}-configmap
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: username
           - name: DB_PASSWORD
             valueFrom:
-              configMapKeyRef:
-                key:  dbPassword
-                name: {{ .Release.Name }}-configmap
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: password
           - name: AUTH_DB
             valueFrom:
-              configMapKeyRef:
-                key:  authDb
-                name: {{ .Release.Name }}-configmap
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: authdb
           - name: DB_SSL
             valueFrom:
               configMapKeyRef:
