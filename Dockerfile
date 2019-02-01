@@ -9,9 +9,17 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o main .
 
 # final stage
 FROM alpine:3.7
+
+ARG COMMIT_REF
+ARG BUILD_DATE
+
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN update-ca-certificates
 WORKDIR /app
 COPY --from=build-env /go/src/github.com/tommbee/go-article-feed/main /app/main
+
+ENV APP_COMMIT_REF=${COMMIT_REF} \
+    APP_BUILD_DATE=${BUILD_DATE}
+    
 EXPOSE 8080
 ENTRYPOINT ["/app/main"]

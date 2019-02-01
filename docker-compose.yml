@@ -1,7 +1,11 @@
 version: '2'
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        COMMIT_REF: 51.0.1
+        BUILD_DATE: "12.12.12"
     container_name: feed-app
     ports:
       - 8080:8080
