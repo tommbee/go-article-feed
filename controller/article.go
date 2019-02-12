@@ -2,23 +2,19 @@ package controller
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 
-	"github.com/tommbee/go-article-feed/model"
+	"github.com/tommbee/go-article-feed/repository"
 )
 
-// Article controller to handle article routes
-type Article struct{}
-
-func getArticle(id int64) (model.Article, error) {
-	// Query repo
-	return model.Article{}, errors.New("")
+// Article is the article listing controller
+type Article struct {
+	Repository repository.ArticleRepository
 }
 
-func (a Article) handleRequest(w http.ResponseWriter, r *http.Request) {
+func (a Article) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
-	article, err := getArticle(1)
+	article, err := a.Repository.GetByUrl("asdf")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/mongodb/mongo-go-driver/options"
+
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/tommbee/go-article-feed/model"
 )
@@ -76,15 +78,17 @@ func configDB(ctx context.Context) (*mongo.Database, error) {
 }
 
 // Fetch all records from the article repository
-func (r *MongoArticleRepository) Fetch(num int) ([]*model.Article, error) {
+func (r *MongoArticleRepository) Fetch(batch int, page int) ([]*model.Article, error) {
 	r.Connect()
-	log.Print("Getting articles...")
+	log.Printf("Getting articles... pages: %d", page)
 	var articles []*model.Article
 	collection := r.db.Collection(r.Collection)
-	cur, err := collection.Find(context.Background(), nil)
-	if err != nil {
-		return articles, err
-	}
+	bs := int32(batch)
+	skip := int64((batch * page))
+	cur, err := collection.Find(context.Background(), nil, &options.FindOptions{
+		BatchSize: &bs,
+		Skip:      &skip,
+	})
 	defer cur.Close(context.Background())
 	for cur.Next(context.Background()) {
 		result := &model.Article{}
@@ -102,5 +106,19 @@ func (r *MongoArticleRepository) Fetch(num int) ([]*model.Article, error) {
 
 // GetByUrl entity
 func (r *MongoArticleRepository) GetByUrl(URL string) (*model.Article, error) {
-	return nil, nil
+	r.Connect()
+	log.Printf("Getting article... (%s)", URL)
+	article := &model.Article{}
+	l := int64(1)
+	cur, err := r.db.Collection(r.Collection).Find(context.Background(), nil, &options.FindOptions{
+		Limit: &l,
+	})
+	if err != nil {
+		return article, err
+	}
+	error := cur.Decode(&article)
+	if error != nil {
+		return article, error
+	}
+	return article, nil
 }

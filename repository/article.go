@@ -6,6 +6,6 @@ import (
 
 // ArticleRepository handles the interface to persistant storage
 type ArticleRepository interface {
-	Fetch(num int) ([]*model.Article, error)
+	Fetch(batch int, page int) ([]*model.Article, error)
 	GetByUrl(URL string) (*model.Article, error)
 }
