@@ -22,4 +22,4 @@ gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
 
 ## deploy helm chart
 echo "Deploying helm chart..."
-helm upgrade -i article-feed ./article-feed-k8s --set image.tag=${CIRCLE_BUILD_NUM} --set port=${PORT} --set server=${SERVER} --set db=${DB} --set articleCollection=${ARTICLE_COLLECTION} --set dbUser=${DB_USER} --set dbPassword=${DB_PASSWORD} --set authDb=${AUTH_DB} --set dbSsl=${DB_SSL}
+helm upgrade -i article-feed ./article-feed-k8s --set image.repository=${DOCKER_IMAGE_URL} --set image.tag=${CIRCLE_BUILD_NUM} --set port=${PORT} --set server=${SERVER} --set db=${DB} --set articleCollection=${ARTICLE_COLLECTION} --set dbUser=${DB_USER} --set dbPassword=${DB_PASSWORD} --set authDb=${AUTH_DB} --set dbSsl=${DB_SSL}
