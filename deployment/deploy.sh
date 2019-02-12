@@ -3,7 +3,7 @@
 echo 'Deploying...'
 
 ## install helm
-echo "Check Helm is installed"
+echo "Check Helm is installed..."
 if [[ $((helm) 2>&1 | grep "command not found" ) ]]; then
     echo "Installing Helm"
     curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
