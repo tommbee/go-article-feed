@@ -12,6 +12,7 @@ if [[ $((helm) 2>&1 | grep "command not found" ) ]]; then
 fi
 
 ## authenticate with GKE
+echo "Authenticating with GKE..."
 apt-get install -qq -y gettext
 echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
@@ -20,5 +21,5 @@ gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
 gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
 
 ## deploy helm chart
-
+echo "Deploying helm chart..."
 helm upgrade -i article-feed ./article-feed-k8s --set image.tag=${CIRCLE_BUILD_NUM} --set port=${PORT} --set server=${SERVER} --set db=${DB} --set articleCollection=${ARTICLE_COLLECTION} --set dbUser=${DB_USER} --set dbPassword=${DB_PASSWORD} --set authDb=${AUTH_DB} --set dbSsl=${DB_SSL}
