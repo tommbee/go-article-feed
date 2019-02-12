@@ -5,7 +5,7 @@
 replicaCount: 2
 
 image:
-  repository: registry.hub.docker.com/tombennett/article-feed
+  repository: tombennett/article-feed
   tag: latest
   pullPolicy: IfNotPresent
 

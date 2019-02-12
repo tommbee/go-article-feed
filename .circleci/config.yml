@@ -5,8 +5,8 @@ jobs:
     steps:
       - checkout
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker build --build-arg COMMIT_REF=${CIRCLE_SHA1} --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` -t $DOCKER_IMAGE_URL:$CIRCLE_BUILD_NUM .
-      - run: docker push $DOCKER_IMAGE_URL:$CIRCLE_BUILD_NUM
+      - run: docker build --build-arg COMMIT_REF=${CIRCLE_SHA1} --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` -t $DOCKER_IMAGE_URL:$CIRCLE_SHA1 .
+      - run: docker push $DOCKER_IMAGE_URL:$CIRCLE_SHA1
   test:
     docker:
       - image: circleci/golang:1.8
