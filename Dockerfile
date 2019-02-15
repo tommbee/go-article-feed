@@ -2,6 +2,8 @@ FROM golang:latest AS build-env
 RUN mkdir -p /go/src/github.com/tommbee/go-article-feed
 ADD . /go/src/github.com/tommbee/go-article-feed
 WORKDIR /go/src/github.com/tommbee/go-article-feed
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+RUN dep ensure
 RUN go get
 #RUN go get -d -v ./...
 #RUN go install -v ./...
