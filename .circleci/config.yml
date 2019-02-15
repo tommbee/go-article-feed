@@ -13,6 +13,8 @@ jobs:
     working_directory: /go/src/github.com/tommbee/go-article-feed
     steps:
       - checkout
+      - run: curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+      - run: dep ensure
       - run: go get
       - run: go test
   deploy:
