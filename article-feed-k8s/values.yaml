@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: tombennett/article-feed
@@ -31,7 +31,7 @@ ingress:
 
 resources: 
   limits:
-    cpu: 600m
+    cpu: 400m
     memory: 256Mi
   requests:
     cpu: 200m
