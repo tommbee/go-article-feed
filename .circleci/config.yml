@@ -101,7 +101,7 @@ workflows:
       - hold:
           type: approval
           requires:
-            - plan
+            - test
       - plan:
           requires:
             - hold
