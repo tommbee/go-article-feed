@@ -1,4 +1,19 @@
 version: 2
+
+references:
+
+  terraform_config: &terraform_config
+    docker:
+      - image: hashicorp/terraform:light
+
+  terraform_init: &terraform_init
+    run:
+      name: terraform init
+      command: |
+        cd terraform
+        echo $GCLOUD_SERVICE_KEY > auth.json
+        terraform init -input=false -backend-config="credentials=auth.json"
+
 jobs:
   build:
     machine: true
@@ -17,13 +32,48 @@ jobs:
       - run: dep ensure
       - run: go get
       - run: go test
-  deploy:
-    docker:
-      - image: google/cloud-sdk
+  plan:
+    <<: *terraform_config
     steps:
       - checkout
-      - run: chmod +x ./deployment/deploy.sh
-      - run: bash ./deployment/deploy.sh
+      - *terraform_init
+      - run:
+          name: terraform plan
+          command: |
+            cd terraform
+            echo $GCLOUD_SERVICE_KEY > auth.json
+            terraform plan \
+            -var "config_file=auth.json" \
+            -var "image_repository=${DOCKER_IMAGE_URL}" \
+            -var "image_tag=${CIRCLE_SHA1}" \
+            -var "sources=${SOURCES}" \
+            -var "server=${SERVER}" \
+            -var "db=${DB}" \
+            -var "port=${PORT}" \
+            -var "article_collection=${ARTICLE_COLLECTION}" \
+            -var "db_user=${DB_USER}" \
+            -var "db_password=${DB_PASSWORD}" \
+            -var "auth_db=${AUTH_DB}" \
+            -var "db_ssl=${DB_SSL}" \
+            -var "namespace=${NAMESPACE}" \
+            -out=../terraform.plan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - terraform.plan
+            - auth.json
+  deploy:
+    <<: *terraform_config
+    steps:
+      - checkout
+      - *terraform_init
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform apply
+          command: |
+            cd terraform
+            terraform apply --auto-approve ../terraform.plan
 workflows:
   version: 2
   untagged-build:
@@ -51,7 +101,10 @@ workflows:
       - hold:
           type: approval
           requires:
-            - test
-      - deploy:
+            - plan
+      - plan:
           requires:
             - hold
+      - deploy:
+          requires:
+            - plan
