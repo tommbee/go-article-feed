@@ -11,3 +11,4 @@ data:
   dbSsl: "{{ .Values.dbSsl }}"
 metadata:
   name: {{ .Release.Name }}-configmap
+  namespace: {{ .Values.nameSpace }}

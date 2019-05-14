@@ -5,6 +5,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
+  namespace: {{ .Values.nameSpace }}
   labels:
     app.kubernetes.io/name: {{ include "article-feed.name" . }}
     helm.sh/chart: {{ include "article-feed.chart" . }}
