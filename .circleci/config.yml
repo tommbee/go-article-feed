@@ -2,19 +2,8 @@ version: 2
 
 references:
 
-  terraform_config: &terraform_config
-    docker:
-      - image: hashicorp/terraform:light
-
-  terraform_init: &terraform_init
-    run:
-      name: terraform init
-      command: |
-        cd terraform
-        echo $GCLOUD_SERVICE_KEY > auth.json
-        terraform init -input=false -backend-config="credentials=auth.json"
-
 jobs:
+  ## Compile the app and push to docker repo
   build:
     machine: true
     steps:
@@ -22,6 +11,7 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker build --build-arg COMMIT_REF=${CIRCLE_SHA1} --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` -t $DOCKER_IMAGE_URL:$CIRCLE_SHA1 .
       - run: docker push $DOCKER_IMAGE_URL:$CIRCLE_SHA1
+  ## Run the unit tests
   test:
     docker:
       - image: circleci/golang:1.8
@@ -32,48 +22,19 @@ jobs:
       - run: dep ensure
       - run: go get
       - run: go test
-  plan:
-    <<: *terraform_config
-    steps:
-      - checkout
-      - *terraform_init
-      - run:
-          name: terraform plan
-          command: |
-            cd terraform
-            echo $GCLOUD_SERVICE_KEY > auth.json
-            terraform plan \
-            -var "config_file=auth.json" \
-            -var "image_repository=${DOCKER_IMAGE_URL}" \
-            -var "image_tag=${CIRCLE_SHA1}" \
-            -var "sources=${SOURCES}" \
-            -var "server=${SERVER}" \
-            -var "db=${DB}" \
-            -var "port=${PORT}" \
-            -var "article_collection=${ARTICLE_COLLECTION}" \
-            -var "db_user=${DB_USER}" \
-            -var "db_password=${DB_PASSWORD}" \
-            -var "auth_db=${AUTH_DB}" \
-            -var "db_ssl=${DB_SSL}" \
-            -var "namespace=${NAMESPACE}" \
-            -out=../terraform.plan
-      - persist_to_workspace:
-          root: .
-          paths:
-            - terraform.plan
-            - auth.json
+  ## Deploy the app    
   deploy:
-    <<: *terraform_config
+    docker:
+      - image: google/cloud-sdk
     steps:
       - checkout
-      - *terraform_init
       - attach_workspace:
           at: .
-      - run:
-          name: terraform apply
-          command: |
-            cd terraform
-            terraform apply --auto-approve ../terraform.plan
+      - run: mkdir -p /usr/local/google-cloud-sdk
+      - run: ln -s /usr/bin /usr/local/google-cloud-sdk/bin
+      - run: echo $GCLOUD_SERVICE_KEY > auth.json
+      - run: chmod +x ./deployment/deploy.sh
+      - run: bash ./deployment/deploy.sh
 workflows:
   version: 2
   untagged-build:
@@ -102,9 +63,6 @@ workflows:
           type: approval
           requires:
             - test
-      - plan:
-          requires:
-            - hold
       - deploy:
           requires:
-            - plan
+            - hold
