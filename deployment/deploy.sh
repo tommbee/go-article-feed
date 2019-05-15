@@ -22,7 +22,7 @@ fi
 
 ## create namespace
 echo "Creating app namespace..."
-kubectl apply -f ./article-feed-k8s/namespace.yml --kubeconfig ./site-config/kubeconfig
+kubectl apply -f ./article-feed-k8s/namespace.json --kubeconfig ./site-config/kubeconfig
 
 ## deploy helm chart
 echo "Deploying helm chart..."
